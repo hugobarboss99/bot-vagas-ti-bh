@@ -2,19 +2,39 @@ services:
   n8n:
     image: n8nio/n8n:latest
     container_name: n8n_vagas
+    restart: always
     ports:
       - "5678:5678"
     environment:
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - TZ=America/Sao_Paulo
     volumes:
       - ./docker_data/n8n:/home/node/.n8n
 
-  evolution:
-    image: atendai/evolution-api:latest
+  evolution_api:
+    image: atendai/evolution-api:v1.6.1
     container_name: evolution_api
+    restart: always
     ports:
       - "8080:8080"
     environment:
+      - SERVER_TYPE=http
+      - SERVER_PORT=8080
+      - SERVER_URL=http://localhost:8080
       - AUTH_TOKEN=${EVOLUTION_API_TOKEN}
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=sqlite
+      - DATABASE_CONNECTION_CLIENT=sqlite
+      - DATABASE_CONNECTION_FILENAME=database.sqlite
+      - CACHE_REDIS_ENABLED=false
+      - CACHE_LOCAL_ENABLED=true
+      - STORE_MESSAGES=false
+      - STORE_MESSAGE_UPDATEMESSAGES=false
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_CHATS=false
     volumes:
       - ./docker_data/evolution:/evolution/instances
+
+volumes:
+  n8n_data:
+  evolution_instances:
