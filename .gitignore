@@ -1,10 +1,7 @@
-# Ignorar arquivos de ambiente com senhas
 .env
 
-# Ignorar pastas de dados do Docker (onde ficam as sessões do WhatsApp)
 /docker_data/
 node_modules/
 
-# Ignorar logs e arquivos temporários
 *.log
 .DS_Store
